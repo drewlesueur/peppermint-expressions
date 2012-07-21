@@ -111,7 +111,7 @@ party:
     
     </pre></td>
     <td rowspan="1">["party",["name","'Cool party"],["music","'Aterciopelados","'javera mena"],["attendees",["drew",["name","'drew"],["age","27"]],"aimee"],["food",["dessert","ice","cream"],["dinner","pizza"],["snack","popcorn"]]]</td>
-    <td>longer nesting</td>
+    <td>longer nesting. Probably for use with a macro in your language</td>
   </tr>
   <tr>
     <td><pre>
@@ -120,6 +120,79 @@ log("hi")
     </pre></td>
     <td rowspan="1">["log",[["json","'parse"],[["db","'get"],"key"]]],["log","'hi"]</td>
     <td>colon with parens</td>
+  </tr>
+  <tr>
+    <td><pre>
+(get func)("fast")
+    </pre></td>
+    <td rowspan="3">[["get","func"],"'fast"]</td>
+    <td>call a call</td>
+  </tr>
+  <tr>
+    <td><pre>
+(get func).fast
+    </pre></td>
+    <td>dot notation after parens</td>
+  </tr>
+  <tr>
+    <td><pre>
+get(func).fast
+    </pre></td>
+    <td>dot notation after parens</td>
+  </tr>
+  <tr>
+    <td><pre>
+(get func).fast(200)
+    </pre></td>
+    <td rowspan="1">[[["get","func"],"'fast"],"200"]</td>
+    <td>dot notation after parens, with method call</td>
+  </tr>
+  <tr>
+    <td><pre>
+"multi line
+strings"
+    </pre></td>
+    <td rowspan="1">"'multi line\nstrings"</td>
+    <td>multi-line strings</td>
+  </tr>
+  <tr>
+    <td><pre>
+randomword"multi line
+strings with quotes " inside "randomword
+    </pre></td>
+    <td rowspan="1">"'multi line\nstrings with quotes \" inside "</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><pre>
+'single-quoted-string
+    </pre></td>
+    <td rowspan="1">"'single-quoted-string"</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><pre>
+"'string with a single quote at the beginning"
+    </pre></td>
+    <td rowspan="1">"''string with a single quote at the beginning"</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><pre>
+' indention
+  based string
+    </pre></td>
+    <td rowspan="1"></td>
+    <td>note the space after the tick</td>
+  </tr>
+  <tr>
+    <td><pre>
+say: ' hello world
+  my name is peppermint
+say: ' goodbye world
+    </pre></td>
+    <td rowspan="1"></td>
+    <td>note the space after the tick</td>
   </tr>
   </tbody>
 </table>

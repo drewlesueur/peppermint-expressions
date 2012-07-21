@@ -101,7 +101,6 @@ setModule("peppermint-expressions", function () { return function (code) {
       }
     }, isStartColon = function () { return chr == ":" 
     }, handleStartColon = function () {
-      console.log("colon indent " + indentWidth)
       return handleOuterFuncCall({
         inColon: true,
         colonIndentWidth: indentWidth

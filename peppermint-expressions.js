@@ -1,4 +1,4 @@
-setModule("parens-parser", function () { return function (code) {
+setModule("peppermint-expressions", function () { return function (code) {
   var isArray = function (obj) { return toString.call(obj) == '[object Array]'; }
   var i = 0, ret, codeLength = code.length, breakSignal = "BREAK!! xyzzy";
   var incIndex = function () { i += 1 }
@@ -15,13 +15,17 @@ setModule("parens-parser", function () { return function (code) {
     var lastGroup = function () { return group[group.length - 1] }
     var setLastGroup = function (x) { group[group.length - 1] = x }
     var secondTolastGroup = function () { return group[group.length - 2] }
-    var lastCharIsEndParens = function () { return code.substr(i - 1, 1) == ")" }
+    var lastCharIsEndParens = function () { return i != 0 && code.substr(i - 1, 1) == ")" }
     var makeArrayLastGroup = function () {
       var last = lastGroup();
       if (!isArray(last)) { setLastGroup([last])  }
     }
+    var makeLastItemString = function () {
+      lastGroup()[0] = "'" + lastGroup()[0] 
+    }
     var joinLastTwo = function () {
       makeArrayLastGroup();
+      if (inDot) makeLastItemString();
       var func = group.splice(group.length - 2, 1)[0]
       lastGroup().unshift(func)
     }
@@ -132,4 +136,10 @@ setModule("parens-parser", function () { return function (code) {
       else if (state == "text") { ret = handleText() }
       if (ret == breakSignal) break;
       incIndex();
-    }; return group; }; return innerParse(); } })
+    };
+    addWord()  
+    //close open parens?
+    return group; 
+  }; 
+  return innerParse(); 
+} })

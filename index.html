@@ -1,0 +1,210 @@
+<style>
+  * {font-family: Consolas, Menlo, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+  }
+  table.syntax tr td {
+    font-family: Consolas, Menlo, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    vertical-align: middle;
+  }
+  </style>
+<h1>Peppermint Expressions</h1>
+
+<p>
+Syntax for your programming language.
+</p>
+
+<p>
+Peppermint expressions are parenthetical and indentation based.
+They support Lisp-like, C-like, and CoffeeScript-ish method calls.
+They also support Python-ish indentation.
+They support a type of dot notation too.
+
+This project includes a parser written in 
+JavaScript that converts the expressions to
+a nested JavaScript array
+</p>
+
+<table class="syntax" border="1" style="border-collapse: collapse;" cellpadding="5" >
+  <thead>
+  <tr>
+    <th>
+      Peppermint Expression
+    </th>
+    <th>
+      JSON Equivalent<sub><a href="#1">1</a></sub>
+    </th>
+    <th>
+     Notes
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>hello</td>
+    <td>"hello"</td>
+    <td>Simple identifier</td>
+  </tr>
+  <tr>
+    <td>"hello"</td>
+    <td>"'hello"</td>
+    <td>text</td>
+  </tr>
+  <tr>
+    <td>(say "hello")</td>
+    <td rowspan="4">["say","'hello"]</td>
+    <td>function call Lisp-like</td>
+  </tr>
+  <tr>
+    <td>say("hello")</td>
+    <td>function call C-like</td>
+  </tr>
+  <tr>
+    <td>say: "hello"</td>
+    <td>function call wanna-be-coffeescript-like</td>
+  </tr>
+  <tr>
+    <td>say.hello</td>
+    <td>dot notation is also a function call</td>
+  </tr>
+  <tr>
+    <td>(add (multiply m x) b)</td>
+    <td rowspan="2">["add",["multiply","m","x"],"b"]</td>
+    <td>nested expressions. Lisp-like</td>
+  </tr>
+  <tr>
+    <td>add(multiply(m x) b)</td>
+    <td>alternate syntax. C-like </td>
+  </tr>
+  <tr>
+    <td>items.map(add-one).filter(only-evens).each(say)</td>
+    <td rowspan="1">[[[[[["items","'map"],"add-one"],"'filter"],"only-evens"],"'each"],"say"]</td>
+    <td>C-like with dot notation caining</td>
+  </tr>
+  <tr>
+    <td>say: capitalize: "star trek"</td>
+    <td rowspan="2">["say",["capitalize","'star trek"]]</td>
+    <td>Coffeescript-ish function calls (note the colon)</td>
+  </tr>
+  <tr>
+    <td>:say :capitalize "star trek"</td>
+    <td>colon can be on either side just like parens</td>
+  </tr>
+  <tr>
+    <td><pre>
+invite-friends: list: "aimee" "drew"
+  "jewel" "grace"
+    </pre></td>
+    <td rowspan="1">["invite-friends",["list","'aimee","'drew","'jewel","'grace"]]</td>
+    <td>Coffeescript-ish function calls (note the colon)</td>
+  </tr>
+  <tr>
+    <td><pre>
+party:
+  name: "Cool party"
+  music: "Aterciopelados" "javera mena" 
+  attendees:
+    drew: name("drew") age(27)
+    aimee
+  food:
+    dessert: ice cream
+    dinner: pizza
+    snack: popcorn
+    
+    </pre></td>
+    <td rowspan="1">["party",["name","'Cool party"],["music","'Aterciopelados","'javera mena"],["attendees",["drew",["name","'drew"],["age","27"]],"aimee"],["food",["dessert","ice","cream"],["dinner","pizza"],["snack","popcorn"]]]</td>
+    <td>longer nesting</td>
+  </tr>
+  <tr>
+    <td><pre>
+log(json.parse: db.get: key)
+log("hi")
+    </pre></td>
+    <td rowspan="1">["log",[["json","'parse"],[["db","'get"],"key"]]],["log","'hi"]</td>
+    <td>colon with parens</td>
+  </tr>
+  </tbody>
+</table>
+
+<a name="1"><b>1</b></a> 
+Not including surrounding array brackets
+
+<script src="zepto.min.js"></script>
+<script src="poor_modules/poor-module.js"></script>
+<script src="peppermint-expressions.js"></script>
+<script>
+  var convertHtmlTableToArray = function (table) {
+    table = $(table)
+    headers = []
+    table.find("thead th").each(function() {
+      headers.push($.trim($(this).text()))
+    })
+    var tbody = table.find("tbody")
+    var vspanMap = {}
+    var ret = []
+
+    tbody.find("tr").each(function (trIndex, tr) {
+      var row = []
+      $(tr).find("td").each(function (tdIndex, td) {
+        td = $(td);
+        var value = $(td).text()
+        row.push(value)
+      }) 
+      ret.push(row)
+    })
+
+
+    tbody.find("tr").each(function (trIndex, tr) {
+      var row = ret[trIndex]
+      $(tr).find("td").each(function (tdIndex, td) {
+        td = $(td);
+        rowspan = td.attr("rowspan") - 0
+        rowspan0index = rowspan - 1
+        if (rowspan0index > 0) {
+          for (var i = 1; i <= rowspan0index; i++) {
+            newRow = ret[trIndex + i] 
+            newRow.splice(tdIndex, 0, row[tdIndex])
+          }   
+        }
+      }) 
+    })
+
+
+    var ret2 = [] 
+    for (var i = 0; i < ret.length; i++) { 
+      row = ret[i] 
+      var row2 = {} 
+      for (var j = 0; j < headers.length; j++) {
+        var header = headers[j]
+        row2[header] = row[j]
+      }
+      ret2.push(row2)
+    }
+
+    return ret2
+
+  }
+  var peppermint = getModule("peppermint-expressions")
+  var runTests = function () {
+    var tableArray = convertHtmlTableToArray("table");
+
+    for (var i = 0; i < tableArray.length; i++) {
+      var row = tableArray[i];
+      try {
+        json = JSON.stringify(peppermint(row["Peppermint Expression"]))
+          .slice(1).slice(0, -1) //get rid of surrounding brackets
+        console.log("comparing", json, row["JSON Equivalent1"])
+        if (json == row["JSON Equivalent1"]) {
+          $("table tbody tr").eq(i).find("td").eq(0).css("background-color", "lightgreen")
+        } else {
+          $("table tbody tr").eq(i).find("td").eq(0).css("background-color", "pink")
+            .append("////" + json)
+        }
+      } catch (e) {
+          //$("table tbody tr").eq(i).find("td").eq(1).css("background-color", "lightred")
+          continue
+      }
+    }
+    console.log(tableArray)
+  }
+  runTests()
+</script>
+

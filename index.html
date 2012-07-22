@@ -1,38 +1,67 @@
 <style>
-  * {font-family: Consolas, Menlo, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
-  }
+  * {font-family: Helvetica, Arial}
   table.syntax tr td {
     font-family: Consolas, Menlo, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
     vertical-align: middle;
   }
+  pre {
+    font-family: Consolas, Menlo, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+  }
   </style>
 <h1>Peppermint Expressions</h1>
 
-<p>
+<p><i>
 Syntax for your programming language.
-</p>
+</i> <a href="http://github.com/drewlesueur/peppermint-expressions">source on github</a></p>
 
 <p>
-Peppermint expressions are parenthetical and indentation based.
-They support Lisp-like, C-like, and CoffeeScript-ish method calls.
-They also support Python-ish indentation.
-They support a type of dot notation too.
-
+Peppermint Expressions are like
+<a href="http://en.wikipedia.org/wiki/S-expression#Example_of_source_code_s-expressions">
+S-expressions</a> but with a few extras.
+<p>
 This project includes a parser written in 
 JavaScript that converts the expressions to
-a nested JavaScript array
+a nested JavaScript array.
+You, as a language designer, can then take that array and do whatever you want with it,
+ interperet it, compile it, apply macros to it.
+</p>
+
+<h2>Usage</h2>
+<p>Peppermint-exression relies on the extremely simple poor_module</p>
+<h4>Browser</h4>
+<pre>
+&lt;script src="poor_modules/poor-module.js"&gt;&lt;/script&gt;
+&lt;script src="peppermint-expressions.js"&gt;&lt;/script&gt;
+&lt;script &gt;
+// poor_module gives you a global getModule
+var peppermint = getModule("peppermint-expressions")
+console.log(peppermint('say "hello world!"'))
+&lt;/script&gt;
+</pre>
+<h4>node.js</h4>
+<pre>
+require("./poor_modules/poor_module.js")
+require("./peppermint-expressions.js")
+peppermint = getModule("peppermint-expressions")
+console.log(peppermint('say "hello world!"'))
+&lt;script &gt;
+// poor_module gives you a global getModule
+var peppermint = getModule("peppermint-expressions")
+console.log(peppermint('say "hello world!"'))
+&lt;/script&gt;
+</pre>
 </p>
 
 <table class="syntax" border="1" style="border-collapse: collapse;" cellpadding="5" >
   <thead>
   <tr>
-    <th>
+    <th width="33%">
       Peppermint Expression
     </th>
-    <th>
+    <th width="33%">
       JSON Equivalent<sub><a href="#1">1</a></sub>
     </th>
-    <th>
+    <th width="33%">
      Notes
     </th>
   </tr>

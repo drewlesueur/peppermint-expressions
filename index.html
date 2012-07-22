@@ -50,7 +50,7 @@ a nested JavaScript array
   </tr>
   <tr>
     <td>(say "hello")</td>
-    <td rowspan="4">["say","'hello"]</td>
+    <td rowspan="5">["say","'hello"]</td>
     <td>function call Lisp-like</td>
   </tr>
   <tr>
@@ -63,7 +63,24 @@ a nested JavaScript array
   </tr>
   <tr>
     <td>say.hello</td>
-    <td>dot notation is also a function call</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>say . hello</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>(say "hello" name)</td>
+    <td rowspan="3">["say","'hello","name"]</td>
+    <td>function call Lisp-like</td>
+  </tr>
+  <tr>
+    <td>say("hello" name)</td>
+    <td>function call C-like</td>
+  </tr>
+  <tr>
+    <td>say: "hello" name</td>
+    <td>function call wanna-be-coffeescript-like</td>
   </tr>
   <tr>
     <td>(add (multiply m x) b)</td>
@@ -149,6 +166,14 @@ get(func).fast
   </tr>
   <tr>
     <td><pre>
+say: extra
+  space at end
+    </pre></td>
+    <td rowspan="1">["say","extra","space","at","end"]</td>
+    <td>note the space after the tick</td>
+  </tr>
+  <tr>
+    <td><pre>
 "multi line
 strings"
     </pre></td>
@@ -177,22 +202,74 @@ strings with quotes " inside "randomword
     <td rowspan="1">"''string with a single quote at the beginning"</td>
     <td></td>
   </tr>
+
   <tr>
     <td><pre>
 ' indention
   based string
-    </pre></td>
-    <td rowspan="1"></td>
+       way more indented
+</pre></td>
+    <td rowspan="1">"indention\n  based string\n       way more indented"</td>
     <td>note the space after the tick</td>
   </tr>
   <tr>
     <td><pre>
 say: ' hello world
-  my name is peppermint
+     my name is peppermint
+  whats yours?
 say: ' goodbye world
-    </pre></td>
-    <td rowspan="1"></td>
+</pre></td>
+  <td rowspan="1"><pre>["say","hello world\n     my name is peppermint\n  whats yours?"],["say","goodbye world"]</pre></td>
     <td>note the space after the tick</td>
+  </tr>
+  <tr>
+    <td><pre>
+say: '
+  dont include first carriage return
+</pre></td>
+    <td rowspan="1">["say","dont include first carriage return"]</td>
+    <td>note the space after the tick</td>
+  </tr>
+  <tr>
+    <td><pre>
+say: '
+        dont include first carriage return
+  hanlde wierd indents
+</pre></td>
+    <td rowspan="1">["say","      dont include first carriage return\nhanlde wierd indents"]</td>
+    <td>note the space after the tick</td>
+  </tr>
+  <tr>
+    <td><pre>
+say: 
+  capitalize: '
+    this is
+    an indented string
+say: ' it handled it
+</pre></td>
+    <td rowspan="1">["say",["capitalize","this is\nan indented string"],["say","it handled it"]]</td>
+    <td>more indentation</td>
+  </tr>
+  <tr>
+    <td><pre>
+build(
+  house
+  pool
+  address: "123 E real st"
+  mailbox
+)
+</pre></td>
+    <td rowspan="1">["build","house","pool",["address","'123 E real st"],"mailbox"]</td>
+    <td>parens on more than one line</td>
+  </tr>
+  <tr>
+    <td><pre>
+$("body")
+  .append(divs)
+  .css("background-color" "red")
+    </pre></td>
+    <td rowspan="1">[[[[["$","'body"],"'append"],"divs"],"'css"],"'background-color","'red"]</td>
+    <td>pretty chaining</td>
   </tr>
   </tbody>
 </table>
@@ -264,15 +341,16 @@ Not including surrounding array brackets
       try {
         json = JSON.stringify(peppermint(row["Peppermint Expression"]))
           .slice(1).slice(0, -1) //get rid of surrounding brackets
-        console.log("comparing", json, row["JSON Equivalent1"])
         if (json == row["JSON Equivalent1"]) {
           $("table tbody tr").eq(i).find("td").eq(0).css("background-color", "lightgreen")
         } else {
           $("table tbody tr").eq(i).find("td").eq(0).css("background-color", "pink")
-            .append("////" + json)
+          .append("<pre>////" + json + "</pre>")
         }
       } catch (e) {
           //$("table tbody tr").eq(i).find("td").eq(1).css("background-color", "lightred")
+          console.log(e)
+          throw e
           continue
       }
     }

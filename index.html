@@ -27,14 +27,13 @@ You, as a language designer, can then take that array and do whatever you want w
 </p>
 
 <h2>Usage</h2>
-<p>Peppermint-exression relies on the extremely simple poor_module</p>
+<p>Peppermint-exression relies on the extremely simple <a href="http://poor-module.drewl.us">poor_module</a></p>
 <h4>Browser</h4>
 <pre>
 &lt;script src="poor_modules/poor-module.js"&gt;&lt;/script&gt;
 &lt;script src="peppermint-expressions.js"&gt;&lt;/script&gt;
 &lt;script &gt;
-// poor_module gives you a global getModule
-var peppermint = getModule("peppermint-expressions")
+var peppermint = poorModule("peppermint-expressions")
 console.log(peppermint('say "hello world!"'))
 &lt;/script&gt;
 </pre>
@@ -42,11 +41,10 @@ console.log(peppermint('say "hello world!"'))
 <pre>
 require("./poor_modules/poor_module.js")
 require("./peppermint-expressions.js")
-peppermint = getModule("peppermint-expressions")
+peppermint = poorModule("peppermint-expressions")
 console.log(peppermint('say "hello world!"'))
 &lt;script &gt;
-// poor_module gives you a global getModule
-var peppermint = getModule("peppermint-expressions")
+var peppermint = poorModule("peppermint-expressions")
 console.log(peppermint('say "hello world!"'))
 &lt;/script&gt;
 </pre>
@@ -361,7 +359,7 @@ Not including surrounding array brackets
     return ret2
 
   }
-  var peppermint = getModule("peppermint-expressions")
+  var peppermint = poorModule("peppermint-expressions")
   var runTests = function () {
     var tableArray = convertHtmlTableToArray("table");
 

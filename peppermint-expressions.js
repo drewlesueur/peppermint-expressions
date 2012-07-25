@@ -1,4 +1,4 @@
-setModule("peppermint-expressions", function () { return function (code) {
+poorModule("peppermint-expressions", function () { return function (code) {
   var isArray = function (obj) { return toString.call(obj) == '[object Array]'
   }, i = 0, ret, codeLength = code.length, breakSignal = "BREAK!! xyzzy"
   , incIndex = function () { i += 1

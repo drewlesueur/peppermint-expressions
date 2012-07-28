@@ -77,7 +77,7 @@ console.log(peppermint('say "hello world!"'))
   </tr>
   <tr>
     <td>(say "hello")</td>
-    <td rowspan="5">["say","'hello"]</td>
+    <td rowspan="7">["say","'hello"]</td>
     <td>function call Lisp-like</td>
   </tr>
   <tr>
@@ -97,8 +97,16 @@ console.log(peppermint('say "hello world!"'))
     <td></td>
   </tr>
   <tr>
+    <td>say hello.</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>say hello,</td>
+    <td></td>
+  </tr>
+  <tr>
     <td>(say "hello" name)</td>
-    <td rowspan="3">["say","'hello","name"]</td>
+    <td rowspan="5">["say","'hello","name"]</td>
     <td>function call Lisp-like</td>
   </tr>
   <tr>
@@ -110,14 +118,132 @@ console.log(peppermint('say "hello world!"'))
     <td>function call wanna-be-coffeescript-like</td>
   </tr>
   <tr>
+    <td>say "hello", name</td>
+    <td>comma and indntation</td>
+  </tr>
+  <tr>
+    <td>say "hello", name.</td>
+    <td>comma and indntation with period</td>
+  </tr>
+
+  <tr>
+    <td>(say "hello" "tom" "jerry") (say "how are you?")</td>
+    <td rowspan="5">["say","'hello","'tom","'jerry"],["say","'how are you?"]</td>
+  </tr>
+  <tr>
+    <td><pre>
+say: "hello"
+  "tom" "jerry"
+say: "how are you?"
+</pre></td>
+  </tr>
+  <tr>
+    <td><pre>
+(say "hello"
+  "tom" "jerry" 
+) (say "how are you?")
+</pre></td>
+  </tr>
+
+  <tr>
+    <td><pre>
+(say "hello"
+  "tom" "jerry" 
+) say:
+  "how are you?"
+</pre></td>
+  </tr>
+
+  <tr>
+    <td><pre>
+say "hello", "tom", "jerry". say "how are you?".
+</pre></td>
+  </tr>
+
+
+  <tr>
     <td>(add (multiply m x) b)</td>
-    <td rowspan="2">["add",["multiply","m","x"],"b"]</td>
+    <td rowspan="4">["add",["multiply","m","x"],"b"]</td>
     <td>nested expressions. Lisp-like</td>
   </tr>
   <tr>
     <td>add(multiply(m x) b)</td>
     <td>alternate syntax. C-like </td>
   </tr>
+  <tr>
+    <td>add multiply(m x), b</td>
+    <td rowspan="2">["add",["multiply","m","x"],"b"]</td>
+  </tr>
+  <tr>
+    <td>add: multiply(m x) b</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>add b, multiply m, x</td>
+    <td rowspan="2">["add","b",["multiply","m","x"]]</td>
+  </tr>
+  <tr>
+    <td>add: b multiply: m x</td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>(run) (play)</td>
+    <td rowspan="4">["run"],["play"]</td>
+  </tr>
+  <tr>
+    <td>run() play()</td>
+  </tr>
+  <tr>
+    <td><pre>
+run:
+play:
+</pre></td>
+  </tr>
+
+  <tr>
+    <td>run. play.</td>
+  </tr>
+
+  <tr>
+    <td>obj.prop</td>
+    <td rowspan="2">["obj","'prop"]</td>
+  </tr>
+  <tr>
+    <td>obj .prop</td>
+  </tr>
+  <tr>
+    <td>obj. prop</td>
+    <td>[["obj"],"prop"]</td>
+  </tr>
+
+  <tr>
+    <td>diplay something..</td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>diplay something also...</td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>display a, b.. c</td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>something.</td>
+  </tr>
+
+  <tr>
+    <td>something..</td>
+  </tr>
+
+  <tr>
+    <td>something...</td>
+  </tr>
+
   <tr>
     <td>items.map(add-one).filter(only-evens).each(say)</td>
     <td rowspan="1">[[[[[["items","'map"],"add-one"],"'filter"],"only-evens"],"'each"],"say"]</td>

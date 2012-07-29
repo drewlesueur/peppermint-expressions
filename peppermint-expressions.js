@@ -66,9 +66,17 @@ poorModule("peppermint-expressions", function () { return function (code) {
       } else { state = "indented-text";
         indentedTextWidth = indentWidth; i++; }
     }, handleWord = function () { word += chr
+    }, handleComma = function () {
+       handlePeriod()
+    }, handlePeriod = function () {
+      if (!secondTolastGroup()) {
+      }  
     }, handleDot = function () {
       handleSpace();
-      inDot = true; 
+      if ( is(nextChr, isSpaceLike, isComma, isDot, isEmpty) 
+           && !is(prevChr, isSpace)) { 
+        handlePeriod() 
+      } else { inDot = true; }
     }, handleEscapeChar = function () { state = "escaped-text" 
     }, handleEndQuote = function () { if (strNameIsNext()) { 
         state = "code"; i += strName.length;
@@ -83,11 +91,13 @@ poorModule("peppermint-expressions", function () { return function (code) {
         word = sliceIndents(word); return breakSignal;
       } else if (inColon && !is(nextChr, isSpace, isTab)
           && colonIndentWidth >= indentWidth) {
-        return handleEndColon(); }
+        return handleEndColon(); 
+      }
     }, manageIndentation = function () {
       if (indenting) {
         if (is(chr, isSpace, isTab)) { 
-          indentWidth++; return checkForCloseColon(); }
+          indentWidth++; 
+          return checkForCloseColon(); }
         else if (is(chr, isCr, isLf)) { indentWidth = 0 }
         else { indenting = false }
       } else { if (is(chr, isCr, isLf)) {
@@ -106,6 +116,7 @@ poorModule("peppermint-expressions", function () { return function (code) {
       if (isSpaceLike(chr)) return handleSpace()
       if (isQuote(chr)) return handleQuote();
       if (isDot(chr)) return handleDot();
+      if (isComma(chr)) return handleComma();
       if (isTick(chr)) return handleTick();
       if (isColon(chr)) { return handleStartColon(); }
       handleWord()
@@ -121,6 +132,7 @@ poorModule("peppermint-expressions", function () { return function (code) {
     }, isSpace = function (chr) { return chr == " " 
     }, isQuote = function (chr) { return chr == "\""
     }, isDot = function (chr) { return chr == "."
+    }, isEmpty = function (chr) { return chr == ""
     }, isCr = function (chr) { return chr == "\r"
     }, isLf = function (chr) { return chr == "\n"
     }, isTab = function (chr) { return chr == "\t"
@@ -129,7 +141,7 @@ poorModule("peppermint-expressions", function () { return function (code) {
     }, word = "", state = "code", group = [],
     chr = "", strName = "", inDot = false;
     while (i < codeLength) {
-      chr = code.charAt(i);
+      prevChr = chr; chr = code.charAt(i);
       nextChr = code.charAt(i + 1);
       if (state == "code") { ret = handleCode() } 
       else if (state == "text") { ret = handleText() }

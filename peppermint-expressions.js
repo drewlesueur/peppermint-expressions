@@ -1,6 +1,14 @@
 poorModule("peppermint-expressions", function () { return function (code) {
   var isArray = function (obj) { return toString.call(obj) == '[object Array]'
+  }, is = function (/*chr, args...*/) {
+    var args, chr; chr = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    var matches = false;
+    loop(args, function (item) { matches = matches || item(chr)})
+    return matches;
+  }, loop = function (list, fn) {
+    for (var i = 0; i < list.length; i++) { fn(list[i], i) } 
   }, i = 0, ret, codeLength = code.length, breakSignal = "BREAK!! xyzzy"
+  , __slice = [].slice
   , incIndex = function () { i += 1
   }, indenting = true , indentWidth = 0
   , innerParse = function (options) {
@@ -24,7 +32,7 @@ poorModule("peppermint-expressions", function () { return function (code) {
       var indent = 0;
       for (var i = 0; i < text.length; i++) {
         var chr = text.charAt(i); 
-        if (chr == " " || chr == "\t") { indent += 1; }
+        if (is(chr, isSpace, isTab)) { indent += 1; }
         else { return indent } } return indent;
     }, sliceIndents = window.sliceIndents = function (text) {
       var lines = text.split("\n"), minIndent = Infinity;
@@ -54,11 +62,13 @@ poorModule("peppermint-expressions", function () { return function (code) {
     }, handleSpace = function () { addWord();
     }, handleQuote = function () { strName = word; resetWord(); state = "text";
     }, handleTick = function () {
-      if (nextIsntSpaceOrTab() && nextIsntCrOrLf()) { handleWord()
+      if (!isSpaceLike(nextChr)) { handleWord()
       } else { state = "indented-text";
         indentedTextWidth = indentWidth; i++; }
     }, handleWord = function () { word += chr
-    }, handleDot = function () { handleSpace(); inDot = true; 
+    }, handleDot = function () {
+      handleSpace();
+      inDot = true; 
     }, handleEscapeChar = function () { state = "escaped-text" 
     }, handleEndQuote = function () { if (strNameIsNext()) { 
         state = "code"; i += strName.length;
@@ -67,32 +77,23 @@ poorModule("peppermint-expressions", function () { return function (code) {
     }, strNameIsNext = function () {
       var next = code.substr(i+1, strName.length);
       if (next == strName) return true; return false;
-    }, isSpaceOrTab = function () { return chr == " " || chr == "\t"
-    }, nextIsntSpaceOrTab = function () { 
-      var nextChr = code.charAt(i + 1);
-      return !(nextChr == " " || nextChr == "\t")
-    }, nextIsntCrOrLf = function () { 
-      var nextChr = code.charAt(i + 1);
-      return !(nextChr == "\n" || nextChr == "\r")
-    }, isAnyNextLine = function () { return chr == "\n" || chr == "\r"
     }, checkForCloseColon = function () {
-      if (state == "indented-text" && nextIsntSpaceOrTab()
+      if (state == "indented-text" && !is(nextChr, isSpace, isTab)
           && indentedTextWidth >= indentWidth) {
         word = sliceIndents(word); return breakSignal;
-      } else if (inColon && nextIsntSpaceOrTab()
+      } else if (inColon && !is(nextChr, isSpace, isTab)
           && colonIndentWidth >= indentWidth) {
         return handleEndColon(); }
     }, manageIndentation = function () {
       if (indenting) {
-        if (isSpaceOrTab()) { 
+        if (is(chr, isSpace, isTab)) { 
           indentWidth++; return checkForCloseColon(); }
-        else if (isAnyNextLine()) { indentWidth = 0 }
+        else if (is(chr, isCr, isLf)) { indentWidth = 0 }
         else { indenting = false }
-      } else { if (isAnyNextLine()) {
+      } else { if (is(chr, isCr, isLf)) {
           indenting = true; indentWidth = 0;
           return checkForCloseColon()
         } }
-    }, isStartColon = function () { return chr == ":" 
     }, handleStartColon = function () {
       return handleOuterFuncCall({ inColon: true,
         colonIndentWidth: indentWidth })
@@ -100,31 +101,36 @@ poorModule("peppermint-expressions", function () { return function (code) {
       handleSpace(); return breakSignal;
     }, handleCode = function () {
       if (manageIndentation() == breakSignal) return breakSignal;
-      if (isStartParens())  return handleOuterFuncCall();
-      if (isEndParens()) return handleEndParens()
-      if (isSpaceLike()) return handleSpace()
-      if (isQuote()) return handleQuote();
-      if (isDot()) return handleDot();
-      if (isTick()) return handleTick();
-      if (isStartColon()) { return handleStartColon(); }
+      if (isStartParens(chr))  return handleOuterFuncCall();
+      if (isEndParens(chr)) return handleEndParens()
+      if (isSpaceLike(chr)) return handleSpace()
+      if (isQuote(chr)) return handleQuote();
+      if (isDot(chr)) return handleDot();
+      if (isTick(chr)) return handleTick();
+      if (isColon(chr)) { return handleStartColon(); }
       handleWord()
     }, handleText = function () {
-      if (isQuote()) return handleEndQuote(); handleWord();
+      if (isQuote(chr)) return handleEndQuote(); handleWord();
     }, handleIndentedText = function () {
       if (manageIndentation() == breakSignal) return breakSignal;
       handleWord()
-    }, isStartParens = function () { return chr == "(";
-    }, isTick = function () { return chr == "'";
-    }, isEndParens = function () { return chr == ")";
-    }, isSpaceLike = function () { return chr == " " || chr == "\n" || chr == "\r" || chr == "\t"
-    }, isQuote = function () { return chr == "\""
-    }, isEscapeChar = function () { return chr == "\\"
-    }, isDot = function () { return chr == "."
-    }, isColon = function () {return chr == ":"
+    }, isStartParens = function (chr) { return chr == "(";
+    }, isTick = function (chr) { return chr == "'";
+    }, isEndParens = function (chr) { return chr == ")";
+    }, isSpaceLike = function (chr) { return chr == " " || chr == "\n" || chr == "\r" || chr == "\t"
+    }, isSpace = function (chr) { return chr == " " 
+    }, isQuote = function (chr) { return chr == "\""
+    }, isDot = function (chr) { return chr == "."
+    }, isCr = function (chr) { return chr == "\r"
+    }, isLf = function (chr) { return chr == "\n"
+    }, isTab = function (chr) { return chr == "\t"
+    }, isColon = function (chr) { return chr == ":" 
+    }, isComma = function (chr) { return chr == ","
     }, word = "", state = "code", group = [],
     chr = "", strName = "", inDot = false;
     while (i < codeLength) {
       chr = code.charAt(i);
+      nextChr = code.charAt(i + 1);
       if (state == "code") { ret = handleCode() } 
       else if (state == "text") { ret = handleText() }
       else if (state == "indented-text") { ret = handleIndentedText() }

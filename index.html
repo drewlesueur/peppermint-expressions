@@ -77,7 +77,7 @@ console.log(peppermint('say "hello world!"'))
   </tr>
   <tr>
     <td>(say "hello")</td>
-    <td rowspan="7">["say","'hello"]</td>
+    <td rowspan="5">["say","'hello"]</td>
     <td>function call Lisp-like</td>
   </tr>
   <tr>
@@ -97,16 +97,8 @@ console.log(peppermint('say "hello world!"'))
     <td></td>
   </tr>
   <tr>
-    <td>say "hello".</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>say "hello",</td>
-    <td></td>
-  </tr>
-  <tr>
     <td>(say "hello" name)</td>
-    <td rowspan="5">["say","'hello","name"]</td>
+    <td rowspan="3">["say","'hello","name"]</td>
     <td>function call Lisp-like</td>
   </tr>
   <tr>
@@ -117,18 +109,10 @@ console.log(peppermint('say "hello world!"'))
     <td>say: "hello" name</td>
     <td>function call wanna-be-coffeescript-like</td>
   </tr>
-  <tr>
-    <td>say "hello", name</td>
-    <td>comma and indntation</td>
-  </tr>
-  <tr>
-    <td>say "hello", name.</td>
-    <td>comma and indntation with period</td>
-  </tr>
 
   <tr>
     <td>(say "hello" "tom" "jerry") (say "how are you?")</td>
-    <td rowspan="5">["say","'hello","'tom","'jerry"],["say","'how are you?"]</td>
+    <td rowspan="4">["say","'hello","'tom","'jerry"],["say","'how are you?"]</td>
   </tr>
   <tr>
     <td><pre>
@@ -155,15 +139,8 @@ say: "how are you?"
   </tr>
 
   <tr>
-    <td><pre>
-say "hello", "tom", "jerry". say "how are you?".
-</pre></td>
-  </tr>
-
-
-  <tr>
     <td>(add (multiply m x) b)</td>
-    <td rowspan="4">["add",["multiply","m","x"],"b"]</td>
+    <td rowspan="3">["add",["multiply","m","x"],"b"]</td>
     <td>nested expressions. Lisp-like</td>
   </tr>
   <tr>
@@ -171,25 +148,18 @@ say "hello", "tom", "jerry". say "how are you?".
     <td>alternate syntax. C-like </td>
   </tr>
   <tr>
-    <td>add multiply(m x), b</td>
-    <td rowspan="2">["add",["multiply","m","x"],"b"]</td>
-  </tr>
-  <tr>
     <td>add: multiply(m x) b</td>
     <td></td>
   </tr>
   <tr>
-    <td>add b, multiply m, x</td>
-    <td rowspan="2">["add","b",["multiply","m","x"]]</td>
-  </tr>
-  <tr>
     <td>add: b multiply: m x</td>
+    <td rowspan="1">["add","b",["multiply","m","x"]]</td>
     <td></td>
   </tr>
 
   <tr>
     <td>(run) (play)</td>
-    <td rowspan="4">["run"],["play"]</td>
+    <td rowspan="3">["run"],["play"]</td>
   </tr>
   <tr>
     <td>run() play()</td>
@@ -202,185 +172,34 @@ play:
   </tr>
 
   <tr>
-    <td>run. play.</td>
-  </tr>
-
-  <tr>
     <td>obj.prop</td>
     <td rowspan="2">["obj","'prop"]</td>
   </tr>
   <tr>
     <td>obj .prop</td>
   </tr>
-  <tr>
-    <td>obj. prop</td>
-    <td>[["obj"],"prop"]</td>
-  </tr>
   
 
   <tr>
-    <td>diplay something also...</td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td>display a, b.. c</td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td>get name..age</td>
-    <td></td>
-  </tr>
-  <tr>
     <td>(get name).age</td>
-    <td></td>
+    <td rowspan="2">[["get","name"],"'age"]</td>
   </tr>
   <tr>
     <td>get(name).age</td>
     <td></td>
   </tr>
-  <tr>
-    <td>get name.("age")</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>get name. .age</td>
-    <td></td>
-  </tr>
 
-  <tr>
-    <td>alert json.parse result.. say hi.</td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td>and tall, or short, strong., or short, and smart.. yo</td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td><pre>
-get json.parse a., json.parse b
-say yo.
-</pre></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td><pre>
-get a, b c
-</pre></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><pre>
-get a, b
-  c
-</pre></td>
-    <td></td>
-    <td>New lines are like adding commas</td>
-  </tr>
-
-  <tr>
-    <td><pre>
-get a, b. c
-</pre></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><pre>
-get a, b
-c
-</pre></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td><pre>
-get a, b
-  c d,
-    e
-</pre></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td><pre>
-get a, b c d, e
-</pre></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td><pre>
-get(a b(c(d e)))
-</pre></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td><pre>
-get a, b c d, e., f
-</pre></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td><pre>
-get a, b c d, e. f
-</pre></td>
-    <td></td>
-  </tr>
-
-
-  <tr>
-    <td><pre>
-set (get-data url),
-  hookup-connections "1", "2"
-  return "fake-data".
-</pre></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td><pre>
-set: (get-data url)
-  hookup-connections "1", "2"
-  return "fake-data".
-</pre></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td><pre>
-get json.parse a., json.parse b.. say yo.
-</pre></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td>and tall, or short, strong</td>
-    <td></td>
-  </tr>
 
   <tr>
     <td>(((something)))</td>
-    <td rowspan="4">[[["something"]]]</td>
+    <td rowspan="2">[[["something"]]]</td>
   </tr>
 
   <tr>
     <td>something()()()</td>
   </tr>
 
-  <tr>
-    <td>something:::</td>
-  </tr>
   
-  <tr>
-    <td>something...</td>
-  </tr>
-
 
   <tr>
     <td>items.map(add-one).filter(only-evens).each(say)</td>

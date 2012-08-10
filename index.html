@@ -43,10 +43,6 @@ require("./poor_modules/poor_module.js")
 require("./peppermint-expressions.js")
 peppermint = poorModule("peppermint-expressions")
 console.log(peppermint('say "hello world!"'))
-&lt;script &gt;
-var peppermint = poorModule("peppermint-expressions")
-console.log(peppermint('say "hello world!"'))
-&lt;/script&gt;
 </pre>
 </p>
 
@@ -108,6 +104,16 @@ console.log(peppermint('say "hello world!"'))
   <tr>
     <td>say: "hello" name</td>
     <td>function call wanna-be-coffeescript-like</td>
+  </tr>
+  <tr>
+    <td>say: "hello" name. say: "something else"</td>
+    <td>["say","'hello","name"],["say","'something else"]</td>
+    <td>Period at end</td>
+  </tr>
+  <tr>
+    <td>say:. yo:.</td>
+    <td>["say"],["yo"]</td>
+    <td>Period at end</td>
   </tr>
 
   <tr>

@@ -66,16 +66,15 @@ poorModule("peppermint-expressions", function () { return function (code) {
       } else { state = "indented-text";
         indentedTextWidth = indentWidth; i++; }
     }, handleWord = function () { word += chr
-    }, handleComma = function () {
-       handlePeriod()
     }, handlePeriod = function () {
-      if (!secondTolastGroup()) {
-      }  
+      console.log(JSON.parse(JSON.stringify(group)))
+      console.log("period");
+      return handleEndColon();
     }, handleDot = function () {
       handleSpace();
-      if ( is(nextChr, isSpaceLike, isComma, isDot, isEmpty) 
+      if ( is(nextChr, isSpaceLike, isDot, isEmpty) 
            && !is(prevChr, isSpace)) { 
-        handlePeriod() 
+        return handlePeriod() 
       } else { inDot = true; }
     }, handleEscapeChar = function () { state = "escaped-text" 
     }, handleEndQuote = function () { if (strNameIsNext()) { 
@@ -116,7 +115,6 @@ poorModule("peppermint-expressions", function () { return function (code) {
       if (isSpaceLike(chr)) return handleSpace()
       if (isQuote(chr)) return handleQuote();
       if (isDot(chr)) return handleDot();
-      if (isComma(chr)) return handleComma();
       if (isTick(chr)) return handleTick();
       if (isColon(chr)) { return handleStartColon(); }
       handleWord()

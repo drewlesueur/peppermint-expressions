@@ -10,7 +10,8 @@ poorModule("peppermint-expressions", function () { return function (code) {
   }, i = 0, ret, codeLength = code.length, breakSignal = "BREAK!! xyzzy"
   , __slice = [].slice
   , incIndex = function () { i += 1
-  }, indenting = true , indentWidth = 0
+  }, indenting = true , indentWidth = 0, indentionBased = false
+  , closeAllOpenColons = false
   , innerParse = function (options) {
     options = options || {}; var indentedTextWidth = 0
     , inColon = ("inColon" in options) ? options.inColon : false
@@ -52,9 +53,13 @@ poorModule("peppermint-expressions", function () { return function (code) {
       handleSpace(); if (inColon) i--; // close all open parens
       return breakSignal;
     }, addWord = function () { 
+      if (word == 'ib') {
+        indentionBased = true
+      }
       if (word.length) { group.push(word);
         if (inDot) { joinLastTwo(); inDot = false; }
       }; resetWord();
+
     }, nestedParens = function (options) {
       var ret = innerParse(options);
       group.push(ret); return ret;
@@ -67,9 +72,7 @@ poorModule("peppermint-expressions", function () { return function (code) {
         indentedTextWidth = indentWidth; i++; }
     }, handleWord = function () { word += chr
     }, handlePeriod = function () {
-      console.log(JSON.parse(JSON.stringify(group)))
-      console.log("period");
-      return handleEndColon();
+      return handleSingleEndColon();
     }, handleDot = function () {
       handleSpace();
       if ( is(nextChr, isSpaceLike, isDot, isEmpty) 
@@ -87,11 +90,14 @@ poorModule("peppermint-expressions", function () { return function (code) {
     }, checkForCloseColon = function () {
       if (state == "indented-text" && !is(nextChr, isSpace, isTab)
           && indentedTextWidth >= indentWidth) {
-        word = sliceIndents(word); return breakSignal;
+        word = "'" + sliceIndents(word)
+        state = "code"
+        return breakSignal;
       } else if (inColon && !is(nextChr, isSpace, isTab)
           && colonIndentWidth >= indentWidth) {
-        return handleEndColon(); 
+          return handleEndColon()
       }
+      closeAllOpenColons = false
     }, manageIndentation = function () {
       if (indenting) {
         if (is(chr, isSpace, isTab)) { 
@@ -104,10 +110,16 @@ poorModule("peppermint-expressions", function () { return function (code) {
           return checkForCloseColon()
         } }
     }, handleStartColon = function () {
+      console.log("iw" + indentWidth)
       return handleOuterFuncCall({ inColon: true,
         colonIndentWidth: indentWidth })
+    }, handleSingleEndColon = function () {
+      handleSpace();
+      return breakSignal;
     }, handleEndColon = function () {
-      handleSpace(); return breakSignal;
+      handleSpace();
+      closeAllOpenColons = true
+      return breakSignal;
     }, handleCode = function () {
       if (manageIndentation() == breakSignal) return breakSignal;
       if (isStartParens(chr))  return handleOuterFuncCall();
@@ -138,9 +150,18 @@ poorModule("peppermint-expressions", function () { return function (code) {
     }, isComma = function (chr) { return chr == ","
     }, word = "", state = "code", group = [],
     chr = "", strName = "", inDot = false;
+
     while (i < codeLength) {
       prevChr = chr; chr = code.charAt(i);
       nextChr = code.charAt(i + 1);
+      if (closeAllOpenColons) { 
+        if (inColon && colonIndentWidth >= indentWidth) {
+          i--
+          break
+        } else {
+          closeAllOpenColons = false
+        }
+      }
       if (state == "code") { ret = handleCode() } 
       else if (state == "text") { ret = handleText() }
       else if (state == "indented-text") { ret = handleIndentedText() }

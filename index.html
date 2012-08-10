@@ -17,7 +17,7 @@ Syntax for your programming language.
 <p>
 Peppermint Expressions are like
 <a href="http://en.wikipedia.org/wiki/S-expression#Example_of_source_code_s-expressions">
-S-expressions</a> but with a few extras.
+S-expressions</a> but with a few extras. (And a few things missing)
 <p>
 This project includes a parser written in 
 JavaScript that converts the expressions to
@@ -325,7 +325,7 @@ strings with quotes " inside "randomword
   based string
        way more indented
 </pre></td>
-    <td rowspan="1">"indention\n  based string\n       way more indented"</td>
+    <td rowspan="1">"'indention\n  based string\n       way more indented"</td>
     <td>note the space after the tick</td>
   </tr>
   <tr>
@@ -335,7 +335,7 @@ say: ' hello world
   whats yours?
 say: ' goodbye world
 </pre></td>
-  <td rowspan="1"><pre>["say","hello world\n     my name is peppermint\n  whats yours?"],["say","goodbye world"]</pre></td>
+  <td rowspan="1"><pre>["say","'hello world\n     my name is peppermint\n  whats yours?"],["say","'goodbye world"]</pre></td>
     <td>note the space after the tick</td>
   </tr>
   <tr>
@@ -343,7 +343,7 @@ say: ' goodbye world
 say: '
   dont include first carriage return
 </pre></td>
-    <td rowspan="1">["say","dont include first carriage return"]</td>
+    <td rowspan="1">["say","'dont include first carriage return"]</td>
     <td>note the space after the tick</td>
   </tr>
   <tr>
@@ -352,7 +352,7 @@ say: '
         dont include first carriage return
   hanlde wierd indents
 </pre></td>
-    <td rowspan="1">["say","      dont include first carriage return\nhanlde wierd indents"]</td>
+    <td rowspan="1">["say","'      dont include first carriage return\nhanlde wierd indents"]</td>
     <td>note the space after the tick</td>
   </tr>
   <tr>
@@ -363,7 +363,7 @@ say:
     an indented string
 say: ' it handled it
 </pre></td>
-    <td rowspan="1">["say",["capitalize","this is\nan indented string"],["say","it handled it"]]</td>
+    <td rowspan="1">["say",["capitalize","'this is\nan indented string"]],["say","'it handled it"]</td>
     <td>more indentation</td>
   </tr>
   <tr>
@@ -385,6 +385,76 @@ $("body")
   .css("background-color" "red")
     </pre></td>
     <td rowspan="1">[[[[["$","'body"],"'append"],"divs"],"'css"],"'background-color","'red"]</td>
+    <td>pretty chaining</td>
+  </tr>
+  <tr>
+    <td><pre>
+' a string
+say "hello world"
+    </pre></td>
+    <td rowspan="1">["say","'hello world"]</td>
+    <td>pretty chaining</td>
+  </tr>
+  <tr>
+    <td><pre>
+say: "yo"
+i ' a string
+say: "yello"
+    </pre></td>
+    <td rowspan="1">["say","'hello world"]</td>
+    <td>pretty chaining</td>
+  </tr>
+
+  <tr>
+    <td><pre>
+say: capitalize: lowercase: titlize: truncate: y
+say: samer leveler
+    </pre></td>
+    <td rowspan="1">["say",["capitalize",["lowercase",["titlize",["truncate","y"]]]]],["say","samer","leveler"]</td>
+    <td>pretty chaining</td>
+  </tr>
+  <tr>
+    <td><pre>
+say: capitalize:
+  lowercase: titlize: truncate: y
+  wowser
+say: samer leveler
+    </pre></td>
+    <td rowspan="1">["say",["capitalize",["lowercase",["titlize",["truncate","y"]]],"wowser"]],["say","samer","leveler"]</td>
+    <td>pretty chaining</td>
+  </tr>
+
+  <tr>
+    <td><pre>
+say: capitalize: ' star trek
+say: samer leveler
+    </pre></td>
+    <td rowspan="1">["say",["capitalize","'star trek"]],["say","samer","leveler"]</td>
+    <td>pretty chaining</td>
+  </tr>
+
+  <tr>
+    <td><pre>
+add: mult: 5 1. div: 10 2.
+    </pre></td>
+    <td rowspan="1">["add",["mult","5","1"],["div","10","2"]]</td>
+    <td>pretty chaining</td>
+  </tr>
+
+  <tr>
+    <td><pre>
+add: mult: 5 1. div: 10 2.. say: hi.
+    </pre></td>
+    <td rowspan="1">["add",["mult","5","1"],["div","10","2"]],["say","hi"]</td>
+    <td>pretty chaining</td>
+  </tr>
+
+  <tr>
+    <td><pre>
+ib
+say "hello world"
+    </pre></td>
+    <td rowspan="1">["say","'hello world"]</td>
     <td>pretty chaining</td>
   </tr>
   </tbody>

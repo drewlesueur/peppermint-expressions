@@ -62,6 +62,7 @@ poorModule("peppermint-expressions", function () { return function (code) {
 
     }, nestedParens = function (options) {
       var ret = innerParse(options);
+      
       group.push(ret); return ret;
     }, resetWord = function () { word = ""
     }, handleSpace = function () { addWord();
@@ -91,9 +92,12 @@ poorModule("peppermint-expressions", function () { return function (code) {
       if (state == "indented-text" && !is(nextChr, isSpace, isTab)
           && indentedTextWidth >= indentWidth) {
         word = "'" + sliceIndents(word)
+        addWord()
+        closeAllOpenColons = true
         state = "code"
-        return breakSignal;
-      } else if (inColon && !is(nextChr, isSpace, isTab)
+        return 
+        //return breakSignal;
+      } else if (inColon && !is(nextChr, isSpace, isTab, isDot)
           && colonIndentWidth >= indentWidth) {
           return handleEndColon()
       }
@@ -110,11 +114,11 @@ poorModule("peppermint-expressions", function () { return function (code) {
           return checkForCloseColon()
         } }
     }, handleStartColon = function () {
-      console.log("iw" + indentWidth)
       return handleOuterFuncCall({ inColon: true,
         colonIndentWidth: indentWidth })
     }, handleSingleEndColon = function () {
       handleSpace();
+      closeAllOpenColons = false
       return breakSignal;
     }, handleEndColon = function () {
       handleSpace();
@@ -134,7 +138,7 @@ poorModule("peppermint-expressions", function () { return function (code) {
       if (isQuote(chr)) return handleEndQuote(); handleWord();
     }, handleIndentedText = function () {
       if (manageIndentation() == breakSignal) return breakSignal;
-      handleWord()
+      if (state == "indented-text") handleWord()
     }, isStartParens = function (chr) { return chr == "(";
     }, isTick = function (chr) { return chr == "'";
     }, isEndParens = function (chr) { return chr == ")";
@@ -167,4 +171,4 @@ poorModule("peppermint-expressions", function () { return function (code) {
       else if (state == "indented-text") { ret = handleIndentedText() }
       if (ret == breakSignal) break; incIndex();
     }; checkForCloseColon(); addWord(); //close open parens?
-    return group; }; return innerParse(); } })
+    return group;}; return innerParse(); } })

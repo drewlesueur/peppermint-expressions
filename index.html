@@ -390,9 +390,9 @@ $("body")
   <tr>
     <td><pre>
 ' a string
-say "hello world"
+say: "hello world"
     </pre></td>
-    <td rowspan="1">["say","'hello world"]</td>
+    <td rowspan="1">"'a string",["say","'hello world"]</td>
     <td>pretty chaining</td>
   </tr>
   <tr>
@@ -401,7 +401,7 @@ say: "yo"
 i ' a string
 say: "yello"
     </pre></td>
-    <td rowspan="1">["say","'hello world"]</td>
+    <td rowspan="1">["say","'yo"],"i","'a string",["say","'yello"]</td>
     <td>pretty chaining</td>
   </tr>
 
@@ -446,6 +446,25 @@ add: mult: 5 1. div: 10 2.
 add: mult: 5 1. div: 10 2.. say: hi.
     </pre></td>
     <td rowspan="1">["add",["mult","5","1"],["div","10","2"]],["say","hi"]</td>
+    <td>pretty chaining</td>
+  </tr>
+
+
+  <tr>
+    <td><pre>
+add: mult: 5 1. div: 10 2.
+say: hi.
+    </pre></td>
+    <td rowspan="1">["add",["mult","5","1"],["div","10","2"]],["say","hi"]</td>
+    <td>pretty chaining</td>
+  </tr>
+
+
+  <tr>
+    <td><pre>
+(s 1) (t 2)
+    </pre></td>
+    <td rowspan="1">["s","1"],["t","2"]</td>
     <td>pretty chaining</td>
   </tr>
 

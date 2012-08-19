@@ -126,10 +126,12 @@ poorModule("peppermint-expressions", function () { return function (code) {
     }, handleEndColon = function () {
       handleSpace(); closeAllOpenColons = true; return breakSignal;
     }, handleCode = function () {
-      //if (!inFakeColon) { 
-      //  ret = handleStartColon({inFakeColon:true})
-      //  return ret
-      //}
+      if (!inFakeColon) { 
+        ret = handleStartColon({inFakeColon:true})
+        //i--
+        return ret
+      }
+
       managed = manageIndentation()
       if (managed == breakSignal) return breakSignal;
       if (isStartParens(chr))  return handleOuterFuncCall();

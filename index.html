@@ -62,6 +62,16 @@ console.log(peppermint('say "hello world!"'))
   </thead>
   <tbody>
   <tr>
+    <td><pre>
+say "hello world"
+say test:
+  this out
+say 1. say 2. say "this is really cool". say yea!
+    </pre></td>
+    <td rowspan="1">["say","'hello world"]</td>
+    <td>pretty chaining</td>
+  </tr>
+  <tr>
     <td>hello</td>
     <td>"hello"</td>
     <td>Simple identifier</td>
@@ -470,8 +480,10 @@ say: hi.
 
   <tr>
     <td><pre>
-ib
 say "hello world"
+say test:
+  this out
+say 1. say 2. say "this is really cool". say yea!
     </pre></td>
     <td rowspan="1">["say","'hello world"]</td>
     <td>pretty chaining</td>

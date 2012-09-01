@@ -34,7 +34,7 @@ You, as a language designer, can then take that array and do whatever you want w
 &lt;script src="peppermint-expressions.js"&gt;&lt;/script&gt;
 &lt;script &gt;
 var peppermint = poorModule("peppermint-expressions")
-console.log(peppermint('say "hello world!"'))
+console.log(peppermint('say:"hello world!"'))
 &lt;/script&gt;
 </pre>
 <h4>node.js</h4>
@@ -42,7 +42,7 @@ console.log(peppermint('say "hello world!"'))
 require("./poor_modules/poor_module.js")
 require("./peppermint-expressions.js")
 peppermint = poorModule("peppermint-expressions")
-console.log(peppermint('say "hello world!"'))
+console.log(peppermint('say: "hello world!"'))
 </pre>
 </p>
 
@@ -61,16 +61,6 @@ console.log(peppermint('say "hello world!"'))
   </tr>
   </thead>
   <tbody>
-  <tr>
-    <td><pre>
-say "hello world"
-say test:
-  this out
-say 1. say 2. say "this is really cool". say yea!
-    </pre></td>
-    <td rowspan="1">["say","'hello world"]</td>
-    <td>pretty chaining</td>
-  </tr>
   <tr>
     <td><pre>
 enter:
@@ -488,16 +478,6 @@ say: hi.
     <td>pretty chaining</td>
   </tr>
 
-  <tr>
-    <td><pre>
-say "hello world"
-say test:
-  this out
-say 1. say 2. say "this is really cool". say yea!
-    </pre></td>
-    <td rowspan="1">["say","'hello world"]</td>
-    <td>pretty chaining</td>
-  </tr>
   </tbody>
 </table>
 

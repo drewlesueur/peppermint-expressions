@@ -11,7 +11,7 @@ poorModule("peppermint-expressions", function () { return function (code) {
   , continueSignal = "go and continue"
   , __slice = [].slice
   , incIndex = function () { i += 1
-  }, indenting = true , indentWidth = 0, firstIsCall = false
+  }, indenting = true , indentWidth = 0
   , closeAllOpenColons = false
   , innerParse = function (options) {
     options = options || {}; var indentedTextWidth = 0
@@ -112,9 +112,6 @@ poorModule("peppermint-expressions", function () { return function (code) {
         else if (is(chr, isCr, isLf)) { indentWidth = 0 }
         else {
           indenting = false 
-          //i--
-          //codeArr.splice(i, 0, ":")
-          //chr = ":"
         }
       } else {
         if (is(chr, isCr, isLf)) {

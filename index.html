@@ -116,6 +116,10 @@ enter:
     <td>function call wanna-be-coffeescript-like</td>
   </tr>
   <tr>
+    <td>(get "some-func"): yo world</td>
+    <td>[["get","'some-func"],"yo","world"]</td>
+  </tr>
+  <tr>
     <td>say: "hello" name. say: "something else"</td>
     <td>["say","'hello","name"],["say","'something else"]</td>
     <td>Period at end</td>
@@ -476,6 +480,38 @@ say: hi.
     </pre></td>
     <td rowspan="1">["s","1"],["t","2"]</td>
     <td>pretty chaining</td>
+  </tr>
+
+  <tr>
+    <td><pre>
+'
+ yo
+ this is
+ a string
+
+' yo
+ this is
+ a string
+
+'
+ yo agian
+
+' yo
+ this is
+ 
+ a string
+
+' yo
+ this is
+
+ a string
+
+
+'
+ yo agian
+</pre></td>
+    <td rowspan="1">"'yo\nthis is\na string","'yo\n this is\n a string","'yo agian","'yo\n this is\n \n a string","'yo\n this is","a","string","'yo agian"</td>
+    <td></td>
   </tr>
 
   </tbody>
